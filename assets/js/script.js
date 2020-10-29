@@ -134,20 +134,58 @@ formEl.addEventListener("submit", taskFormHandler);
 
 // task button handling
 var taskButtonHandler = function(event) {
-    console.log(event.target);
 
-    if (event.target.matches(".delete-btn")) {
-        // get the element's task id
-        var taskId = event.target.getAttribute("data-task-id");
+    // get target element from event
+    var targetEl = event.target;
+
+    // edit button was clicked
+    if (targetEl.matches(".edit-btn")) {
+        var taskId = targetEl.getAttribute("data-task-id");
+        editTask(taskId);
+        } 
+
+    // delete button was clicked
+    else if (targetEl.matches(".delete-btn")) {
+        var taskId = targetEl.getAttribute("data-task-id");
         deleteTask(taskId);
-      }
+        }
+
+    };
+
+// edit button functionality
+var editTask = function(taskId){
+    // announce edit button useage and taskId
+    console.log("editing task #" + taskId);
+
+    // get task list item element with taskId for editing
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    // get content from taskSelected task name  
+    var taskName = taskSelected.querySelector("h3.task-name").textContent;
+    document.querySelector("input[name='task-name']").value = taskName;
+
+    // get content from taskSelected task type
+    var taskType = taskSelected.querySelector("span.task-type").textContent;
+    document.querySelector("select[name='task-type']").value = taskType;
+
+    // save edit 
+    document.querySelector("#save-task").textContent = "Save Task";
+
+    // include taskId
+    formEl.setAttribute("data-task-id", taskId);
+
     };
 
 // delete button functionality
 var deleteTask = function(taskId){
+
+    // get task list item element with taskId for deletion
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    // delete task via .remove
     taskSelected.remove();
-};
+
+    };
 
 // task button event listener 
 pageContentEl.addEventListener("click", taskButtonHandler);
