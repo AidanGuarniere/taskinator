@@ -1,8 +1,16 @@
-// task button
+// task button form
 var formEl = document.querySelector("#task-form");
+
+// Tasks To Do column
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
-// track tasks by counting
+// Tasks In Progress column
+var tasksInProgressEl = document.querySelector("#tasks-in-progress");
+
+// Tasks Completed column
+var tasksCompletedEl = document.querySelector("#tasks-completed");
+
+// track task id's by counting
 var taskIdCounter = 0;
 
 // page content
@@ -219,7 +227,33 @@ var deleteTask = function(taskId){
 
     };
 
+// handle task status change
+var taskStatusChangeHandler = function(event) {
+
+    // get the task item's id
+    var taskId = event.target.getAttribute("data-task-id");
+
+    // get the currently selected option's value and convert to lowercase
+    var statusValue = event.target.value.toLowerCase();
+
+    // find the parent task item element based on the id
+    var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+
+    // append task to appropriate column
+    if (statusValue === "to do") {
+        tasksToDoEl.appendChild(taskSelected);
+        } 
+    else if (statusValue === "in progress") {
+        tasksInProgressEl.appendChild(taskSelected);
+        } 
+    else if (statusValue === "completed") {
+        tasksCompletedEl.appendChild(taskSelected);
+        }
+
+    };
+
 // task button event listener 
 pageContentEl.addEventListener("click", taskButtonHandler);
 
+pageContentEl.addEventListener("change", taskStatusChangeHandler);
 
